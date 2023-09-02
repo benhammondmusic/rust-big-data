@@ -1,49 +1,135 @@
-state_name,race,column_3,column_4,column_5,date
-California,White,Value1,123,ABC,2023-09-01
-New York,Black,Value2,456,DEF,2023-09-02
-Texas,Hispanic,,789,GHI,2023-09-03
-Florida,Asian,Value4,,JKL,2023-09-04
-Illinois,White,Value5,112,,2023-09-05
-Arizona,Black,Value6,,PQR,2023-09-06
-Ohio,,Value7,415,STU,2023-09-07
-Pennsylvania,Asian,Value8,611,,2023-09-08
-Michigan,White,Value9,,YZA,2023-09-09
-North Carolina,Black,,821,BCD,2023-09-10
-Virginia,Hispanic,Value11,,EFG,2023-09-11
-Georgia,White,,234,HIJ,2023-09-12
-New Jersey,Black,Value13,345,KLM,2023-09-13
-Washington,Asian,Value14,456,NOP,2023-09-14
-Tennessee,White,Value15,567,PQR,2023-09-15
-Indiana,Black,Value16,678,STU,2023-09-16
-Missouri,Hispanic,Value17,789,VWX,2023-09-17
-Wisconsin,White,Value18,890,YZA,2023-09-18
-Minnesota,Black,,901,BCD,2023-09-19
-Colorado,Asian,Value20,123,DEF,2023-09-20
-Alabama,White,Value21,234,EFG,2023-09-21
-South Carolina,Black,Value22,,HIJ,2023-09-22
-Louisiana,Hispanic,Value23,456,KLM,2023-09-23
-Kentucky,White,Value24,567,NOP,2023-09-24
-Oregon,Asian,Value25,678,PQR,2023-09-25
-Oklahoma,White,Value26,789,STU,2023-09-26
-Connecticut,Black,Value27,890,VWX,2023-09-27
-Iowa,Hispanic,Value28,901,YZA,2023-09-28
-Nevada,White,Value29,101,BCD,2023-09-29
-Arkansas,Asian,Value30,234,DEF,2023-09-30
-Mississippi,Black,Value31,345,EFG,2023-10-01
-Kansas,Hispanic,Value32,456,HIJ,2023-10-02
-Utah,White,Value33,567,KLM,2023-10-03
-Nebraska,Black,Value34,678,NOP,2023-10-04
-West Virginia,Hispanic,,789,PQR,2023-10-05
-New Mexico,White,Value36,890,STU,2023-10-06
-Hawaii,Asian,,901,VWX,2023-10-07
-New Hampshire,White,Value38,101,YZA,2023-10-08
-Rhode Island,Black,Value39,234,BCD,2023-10-09
-Idaho,Hispanic,Value40,,DEF,2023-10-10
-Montana,White,Value41,456,EFG,2023-10-11
-Delaware,Black,Value42,567,HIJ,2023-10-12
-South Dakota,Hispanic,Value43,678,KLM,2023-10-13
-North Dakota,White,Value44,789,NOP,2023-10-14
-Alaska,Asian,Value45,890,PQR,2023-10-15
-Vermont,White,Value46,901,STU,2023-10-16
-Wyoming,Black,,101,VWX,2023-10-17
-Maine,Hispanic,Value48,234,YZA,2023-10-18
+state_name,race,age,case_count,some_code,date
+California,White,1,123,ABC,2023-09-01
+California,Black,2,200,DEF,2023-09-02
+California,Hispanic,3,300,GHI,2023-09-03
+New York,Black,2,456,DEF,2023-09-02
+New York,Hispanic,3,600,GHI,2023-09-03
+New York,Asian,4,800,JKL,2023-09-04
+Texas,White,1,100,ABC,2023-09-01
+Texas,Black,2,300,DEF,2023-09-02
+Texas,Hispanic,3,500,GHI,2023-09-03
+Florida,Asian,4,400,JKL,2023-09-04
+Florida,White,1,100,ABC,2023-09-01
+Florida,Black,2,200,DEF,2023-09-02
+Illinois,White,5,112,,2023-09-05
+Illinois,Black,6,,PQR,2023-09-06
+Illinois,Hispanic,7,200,GHI,2023-09-03
+Arizona,Black,6,,PQR,2023-09-06
+Arizona,Hispanic,3,400,GHI,2023-09-03
+Arizona,White,1,200,ABC,2023-09-01
+Ohio,Hispanic,8,415,STU,2023-09-07
+Ohio,White,9,,YZA,2023-09-09
+Ohio,Black,2,300,DEF,2023-09-02
+Pennsylvania,Black,13,345,KLM,2023-09-13
+Pennsylvania,Asian,14,456,NOP,2023-09-14
+Pennsylvania,White,15,567,PQR,2023-09-15
+Michigan,Black,16,678,STU,2023-09-16
+Michigan,Hispanic,17,789,VWX,2023-09-17
+Michigan,White,18,890,YZA,2023-09-18
+North Carolina,Asian,19,901,BCD,2023-09-19
+North Carolina,White,20,123,DEF,2023-09-20
+North Carolina,Black,21,234,EFG,2023-09-21
+Virginia,Hispanic,22,,HIJ,2023-09-22
+Virginia,White,23,456,KLM,2023-09-23
+Virginia,Black,24,567,NOP,2023-09-24
+Georgia,White,25,678,PQR,2023-09-25
+Georgia,Asian,26,789,STU,2023-09-26
+Georgia,Hispanic,27,890,VWX,2023-09-27
+New Jersey,White,28,901,YZA,2023-09-28
+New Jersey,Black,29,101,BCD,2023-09-29
+New Jersey,Hispanic,30,234,DEF,2023-09-30
+Washington,Black,31,345,EFG,2023-10-01
+Washington,White,32,456,HIJ,2023-10-02
+Washington,Asian,33,567,KLM,2023-10-03
+Tennessee,White,34,678,NOP,2023-10-04
+Tennessee,Hispanic,35,,PQR,2023-10-05
+Tennessee,Black,36,890,STU,2023-10-06
+Indiana,White,37,901,VWX,2023-10-07
+Indiana,Asian,38,101,YZA,2023-10-08
+Indiana,Hispanic,39,234,BCD,2023-10-09
+Missouri,Black,40,345,DEF,2023-10-10
+Missouri,White,41,456,EFG,2023-10-11
+Missouri,Hispanic,42,567,HIJ,2023-10-12
+Wisconsin,White,43,678,KLM,2023-10-13
+Wisconsin,Black,44,789,NOP,2023-10-14
+Wisconsin,Asian,45,890,PQR,2023-10-15
+Minnesota,Black,46,901,STU,2023-10-16
+Minnesota,Hispanic,47,101,VWX,2023-10-17
+Minnesota,White,48,234,YZA,2023-10-18
+Colorado,Hispanic,49,345,BCD,2023-10-19
+Colorado,White,50,456,DEF,2023-10-20
+Colorado,Black,51,567,EFG,2023-10-21
+Alabama,White,52,678,HIJ,2023-10-22
+Alabama,Black,53,789,KLM,2023-10-23
+Alabama,Hispanic,54,890,NOP,2023-10-24
+South Carolina,Asian,55,901,PQR,2023-10-25
+South Carolina,White,56,101,STU,2023-10-26
+South Carolina,Black,57,234,VWX,2023-10-27
+Louisiana,Black,58,345,YZA,2023-10-28
+Louisiana,Hispanic,59,456,BCD,2023-10-29
+Louisiana,White,60,567,DEF,2023-10-30
+Kentucky,White,61,678,EFG,2023-11-01
+Kentucky,Black,62,789,HIJ,2023-11-02
+Kentucky,Hispanic,63,890,KLM,2023-11-03
+Oregon,White,64,901,NOP,2023-11-04
+Oregon,Asian,65,101,PQR,2023-11-05
+Oregon,Black,66,234,STU,2023-11-06
+Oklahoma,White,67,345,VWX,2023-11-07
+Oklahoma,Black,68,456,YZA,2023-11-08
+Oklahoma,Hispanic,69,567,BCD,2023-11-09
+Connecticut,Hispanic,70,678,DEF,2023-11-10
+Connecticut,White,71,789,EFG,2023-11-11
+Connecticut,Black,72,890,HIJ,2023-11-12
+Iowa,Black,73,901,KLM,2023-11-13
+Iowa,White,74,101,NOP,2023-11-14
+Iowa,Hispanic,75,234,PQR,2023-11-15
+Nevada,White,76,345,STU,2023-11-16
+Nevada,Black,77,456,VWX,2023-11-17
+Nevada,Asian,78,567,YZA,2023-11-18
+Arkansas,Asian,79,678,BCD,2023-11-19
+Arkansas,White,80,789,DEF,2023-11-20
+Arkansas,Hispanic,81,890,EFG,2023-11-21
+Mississippi,Black,82,901,HIJ,2023-11-22
+Mississippi,White,83,101,KLM,2023-11-23
+Mississippi,Hispanic,84,234,NOP,2023-11-24
+Kansas,White,85,345,PQR,2023-11-25
+Kansas,Hispanic,86,456,STU,2023-11-26
+Kansas,Black,87,567,VWX,2023-11-27
+Utah,White,88,678,YZA,2023-11-28
+Utah,Black,89,789,BCD,2023-11-29
+Utah,Hispanic,90,890,DEF,2023-11-30
+Nebraska,White,91,901,EFG,2023-12-01
+Nebraska,Asian,92,101,HIJ,2023-12-02
+Nebraska,Black,93,234,KLM,2023-12-03
+West Virginia,Hispanic,94,345,NOP,2023-12-04
+West Virginia,White,95,456,PQR,2023-12-05
+West Virginia,Black,96,567,STU,2023-12-06
+New Mexico,White,97,678,VWX,2023-12-07
+New Mexico,Black,98,789,YZA,2023-12-08
+New Mexico,Hispanic,99,890,BCD,2023-12-09
+Hawaii,Asian,100,901,DEF,2023-12-10
+Hawaii,White,101,101,EFG,2023-12-11
+Hawaii,Black,102,234,HIJ,2023-12-12
+New Hampshire,Hispanic,103,345,KLM,2023-12-13
+New Hampshire,White,104,456,NOP,2023-12-14
+New Hampshire,Black,105,567,PQR,2023-12-15
+Rhode Island,White,106,678,STU,2023-12-16
+Rhode Island,Black,107,789,VWX,2023-12-17
+Rhode Island,Hispanic,108,890,YZA,2023-12-18
+Idaho,White,109,901,BCD,2023-12-19
+Idaho,Black,110,101,DEF,2023-12-20
+Idaho,Asian,111,234,EFG,2023-12-21
+Montana,Hispanic,112,345,HIJ,2023-12-22
+Montana,White,113,456,KLM,2023-12-23
+Montana,Black,114,567,NOP,2023-12-24
+Delaware,White,115,678,PQR,2023-12-25
+Delaware,Asian,116,789,STU,2023-12-26
+Delaware,Hispanic,117,890,VWX,2023-12-27
+South Dakota,White,118,901,YZA,2023-12-28
+South Dakota,Black,119,101,BCD,2023-12-29
+South Dakota,Asian,120,234,DEF,2023-12-30
+North Dakota,Hispanic,121,345,EFG,2024-01-01
+North Dakota,White,122,456,HIJ,2024-01-02
+North Dakota,Black,123,567,KLM,2024-01-03
+Alaska,White,124,678,NOP,2024-01-04
+Alaska,Black,125,789,PQR,2024-01-05
