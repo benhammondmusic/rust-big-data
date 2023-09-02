@@ -1,0 +1,49 @@
+state_name,race,column_3,column_4,column_5,date
+California,White,Value1,123,ABC,2023-09-01
+New York,Black,Value2,456,DEF,2023-09-02
+Texas,Hispanic,,789,GHI,2023-09-03
+Florida,Asian,Value4,,JKL,2023-09-04
+Illinois,White,Value5,112,,2023-09-05
+Arizona,Black,Value6,,PQR,2023-09-06
+Ohio,,Value7,415,STU,2023-09-07
+Pennsylvania,Asian,Value8,611,,2023-09-08
+Michigan,White,Value9,,YZA,2023-09-09
+North Carolina,Black,,821,BCD,2023-09-10
+Virginia,Hispanic,Value11,,EFG,2023-09-11
+Georgia,White,,234,HIJ,2023-09-12
+New Jersey,Black,Value13,345,KLM,2023-09-13
+Washington,Asian,Value14,456,NOP,2023-09-14
+Tennessee,White,Value15,567,PQR,2023-09-15
+Indiana,Black,Value16,678,STU,2023-09-16
+Missouri,Hispanic,Value17,789,VWX,2023-09-17
+Wisconsin,White,Value18,890,YZA,2023-09-18
+Minnesota,Black,,901,BCD,2023-09-19
+Colorado,Asian,Value20,123,DEF,2023-09-20
+Alabama,White,Value21,234,EFG,2023-09-21
+South Carolina,Black,Value22,,HIJ,2023-09-22
+Louisiana,Hispanic,Value23,456,KLM,2023-09-23
+Kentucky,White,Value24,567,NOP,2023-09-24
+Oregon,Asian,Value25,678,PQR,2023-09-25
+Oklahoma,White,Value26,789,STU,2023-09-26
+Connecticut,Black,Value27,890,VWX,2023-09-27
+Iowa,Hispanic,Value28,901,YZA,2023-09-28
+Nevada,White,Value29,101,BCD,2023-09-29
+Arkansas,Asian,Value30,234,DEF,2023-09-30
+Mississippi,Black,Value31,345,EFG,2023-10-01
+Kansas,Hispanic,Value32,456,HIJ,2023-10-02
+Utah,White,Value33,567,KLM,2023-10-03
+Nebraska,Black,Value34,678,NOP,2023-10-04
+West Virginia,Hispanic,,789,PQR,2023-10-05
+New Mexico,White,Value36,890,STU,2023-10-06
+Hawaii,Asian,,901,VWX,2023-10-07
+New Hampshire,White,Value38,101,YZA,2023-10-08
+Rhode Island,Black,Value39,234,BCD,2023-10-09
+Idaho,Hispanic,Value40,,DEF,2023-10-10
+Montana,White,Value41,456,EFG,2023-10-11
+Delaware,Black,Value42,567,HIJ,2023-10-12
+South Dakota,Hispanic,Value43,678,KLM,2023-10-13
+North Dakota,White,Value44,789,NOP,2023-10-14
+Alaska,Asian,Value45,890,PQR,2023-10-15
+Vermont,White,Value46,901,STU,2023-10-16
+Wyoming,Black,,101,VWX,2023-10-17
+Maine,Hispanic,Value48,234,YZA,2023-10-18
