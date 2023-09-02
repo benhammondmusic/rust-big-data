@@ -8,5 +8,8 @@ edition = "2021"
 [dependencies]
 chrono = "0.4.28"
 csv = "1.2.2"
+polars = { version = "0.32.1", features = ["lazy", "csv"] }
+polars-core = "0.32.1"
+polars-io = "0.32.1"
 serde = "1.0.188"
 serde_derive = "1.0.188"
