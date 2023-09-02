@@ -19,7 +19,7 @@ struct Record {
 }
 
 fn example() -> Result<(), Box<dyn Error>> {
-    let file = File::open("_restricted_small_data.csv")?;
+    let file = File::open("small_data.csv")?;
     let mut count_deaths = 0;
 
     let mut rdr = csv::Reader::from_reader(file);
@@ -34,7 +34,7 @@ fn example() -> Result<(), Box<dyn Error>> {
         }
     }
 
-    println!("Number of White Deaths: {}", count_deaths);
+    println!("#: {}", count_deaths);
 
     Ok(())
 }
