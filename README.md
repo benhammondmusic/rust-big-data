@@ -1,4 +1,4 @@
-# Rust Big Data Playground
+# 🦀 Rust Big Data Playground
 
 Just a place for me to mess around while learning Rust; potentially for usage in the https://healthequitytracker.org
 
