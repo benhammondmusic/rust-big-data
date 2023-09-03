@@ -69,6 +69,7 @@ fn main() {
 /*
 SOURCE DATA COLUMNS
 
+cSpell:disable
 abdom_yn,
 abxchest_yn,
 acuterespdistress_yn,
@@ -103,6 +104,7 @@ sex,
 sob_yn,
 sthroat_yn
 
+cSpell:enable
 
 HET SEX STATE COLUMNS
 state_postal,sex,time_period,cases,hosp_y,hosp_n,hosp_unknown,death_y,death_n,death_unknown
