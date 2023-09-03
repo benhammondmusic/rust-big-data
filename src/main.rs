@@ -12,7 +12,7 @@ const TEST_FILENAME_PART_1: &str = "COVID_Cases_Restricted_Detailed_04302021_Par
 // const TEST_FILENAME_PART_2: &str = "COVID_Cases_Restricted_Detailed_04302021_Part_2.csv";
 
 fn load_csv_and_agg() -> Result<DataFrame, PolarsError> {
-    let test_filepath: String = format!("tests/fake_data/{TEST_FILENAME_PART_1}");
+    let test_filepath: String = format!("tests/fake_source_data/{TEST_FILENAME_PART_1}");
     let groupby_cols = vec![
         col("time_period"),
         col("res_state"),
@@ -24,32 +24,74 @@ fn load_csv_and_agg() -> Result<DataFrame, PolarsError> {
 
     LazyCsvReader::new(test_filepath)
         .has_header(true)
+        .with_quote_char(None)
         .finish()?
         // "time_period" as cdc col with only YYYY-MM
+        .with_column((col("cdc_case_earliest_dt").str().str_slice(0, Some(7))).alias("time_period"))
+        // "case_yn" counts every row with a valid date as 1 case
         .with_column(
-            when(col("cdc_case_earliest_dt").is_not_null())
-                .then(col("cdc_case_earliest_dt").slice(0, 7))
-                .otherwise("")
-                .alias("time_period"),
-        )
-        // "case_yn" counts every row with a valid data as 1 case
-        .with_column(
-            when(col("cdc_case_earliest_dt").is_not_null())
+            when(col("time_period").is_not_null())
                 .then(lit(1))
                 .otherwise(lit(0))
-                .alias("case_yn"),
+                .alias("cases"),
+        )
+        // "hosp_y" counts every row with a "Yes"
+        .with_column(
+            when(col("hosp_yn").eq(lit("Yes")))
+                .then(lit(1))
+                .otherwise(lit(0))
+                .alias("hosp_y"),
+        )
+        // "hosp_n" counts every row with a "No"
+        .with_column(
+            when(col("hosp_yn").eq(lit("No")))
+                .then(lit(1))
+                .otherwise(lit(0))
+                .alias("hosp_n"),
+        )
+        // "hosp_unknown" counts every row without a "Yes" or a "No"
+        .with_column(
+            col("hosp_yn")
+                .neq(lit("Yes"))
+                .and(col("hosp_yn").neq(lit("No")))
+                .alias("hosp_unknown"),
+        )
+        // "death_y" counts every row with a "Yes"
+        .with_column(
+            when(col("death_yn").eq(lit("Yes")))
+                .then(lit(1))
+                .otherwise(lit(0))
+                .alias("death_y"),
+        )
+        // "death_n" counts every row with a "No"
+        .with_column(
+            when(col("death_yn").eq(lit("No")))
+                .then(lit(1))
+                .otherwise(lit(0))
+                .alias("death_n"),
+        )
+        // "death_unknown" counts every row without a "Yes" or a "No"
+        .with_column(
+            col("death_yn")
+                .neq(lit("Yes"))
+                .and(col("death_yn").neq(lit("No")))
+                .alias("death_unknown"),
         )
         .groupby(groupby_cols)
         .agg(vec![
-            col("case_yn").sum(),
-            col("hosp_yn").sum(),
-            col("death_yn").sum(),
+            col("cases").sum(),
+            col("hosp_y").sum(),
+            col("hosp_n").sum(),
+            col("hosp_unknown").sum(),
+            col("death_y").sum(),
+            col("death_n").sum(),
+            col("death_unknown").sum(),
         ])
         .collect()
 }
 
 fn main() {
-    let mut df = load_csv_and_agg().expect("oops");
+    let mut df = load_csv_and_agg().expect("Problem with load_csv_and_agg()");
 
     let sort_cols = [
         "time_period",
@@ -59,7 +101,9 @@ fn main() {
         "sex",
     ];
 
-    df = df.sort(sort_cols, false, false).expect("oops");
+    df = df
+        .sort(sort_cols, false, false)
+        .expect("Problem sorting df");
     println!("{:?}", df);
 
     let mut file = std::fs::File::create("results.csv").unwrap();
@@ -107,6 +151,15 @@ sthroat_yn
 cSpell:enable
 
 HET SEX STATE COLUMNS
-state_postal,sex,time_period,cases,hosp_y,hosp_n,hosp_unknown,death_y,death_n,death_unknown
+state_postal,
+sex,
+time_period,
+cases,
+hosp_y,
+hosp_n,
+hosp_unknown,
+death_y,
+death_n,
+death_unknown
 
 */
