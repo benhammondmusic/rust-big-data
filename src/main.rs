@@ -13,6 +13,11 @@ const TEST_FILENAME_PART_1: &str = "COVID_Cases_Restricted_Detailed_04302021_Par
 
 fn load_csv_and_agg() -> Result<DataFrame, PolarsError> {
     let test_filepath: String = format!("tests/fake_source_data/{TEST_FILENAME_PART_1}");
+
+    let known_sex_groups = vec!["Male", "Female", "Other"];
+    let know_sex_series = Series::new("KNOWN_SEX_GROUP", known_sex_groups);
+    let filter_known_sex_groups = col("sex").is_in(lit(know_sex_series));
+
     let groupby_cols = vec![
         col("time_period"),
         col("res_state"),
@@ -28,54 +33,28 @@ fn load_csv_and_agg() -> Result<DataFrame, PolarsError> {
         .finish()?
         // "time_period" as cdc col with only YYYY-MM
         .with_column((col("cdc_case_earliest_dt").str().str_slice(0, Some(7))).alias("time_period"))
-        // "case_yn" counts every row with a valid date as 1 case
-        .with_column(
-            when(col("time_period").is_not_null())
-                .then(lit(1))
-                .otherwise(lit(0))
-                .alias("cases"),
-        )
-        // "hosp_y" counts every row with a "Yes"
-        .with_column(
-            when(col("hosp_yn").eq(lit("Yes")))
-                .then(lit(1))
-                .otherwise(lit(0))
-                .alias("hosp_y"),
-        )
-        // "hosp_n" counts every row with a "No"
-        .with_column(
-            when(col("hosp_yn").eq(lit("No")))
-                .then(lit(1))
-                .otherwise(lit(0))
-                .alias("hosp_n"),
-        )
-        // "hosp_unknown" counts every row without a "Yes" or a "No"
+        .with_column(col("time_period").is_not_null().alias("cases"))
+        .with_column(col("hosp_yn").eq(lit("Yes")).alias("hosp_y"))
+        .with_column(col("hosp_yn").eq(lit("No")).alias("hosp_n"))
         .with_column(
             col("hosp_yn")
                 .neq(lit("Yes"))
                 .and(col("hosp_yn").neq(lit("No")))
                 .alias("hosp_unknown"),
         )
-        // "death_y" counts every row with a "Yes"
-        .with_column(
-            when(col("death_yn").eq(lit("Yes")))
-                .then(lit(1))
-                .otherwise(lit(0))
-                .alias("death_y"),
-        )
-        // "death_n" counts every row with a "No"
-        .with_column(
-            when(col("death_yn").eq(lit("No")))
-                .then(lit(1))
-                .otherwise(lit(0))
-                .alias("death_n"),
-        )
-        // "death_unknown" counts every row without a "Yes" or a "No"
+        .with_column(col("death_yn").eq(lit("Yes")).alias("death_y"))
+        .with_column(col("death_yn").eq(lit("No")).alias("death_n"))
         .with_column(
             col("death_yn")
                 .neq(lit("Yes"))
                 .and(col("death_yn").neq(lit("No")))
                 .alias("death_unknown"),
+        )
+        // only keep Male/Female/Other/Unknown options for sex
+        .with_column(
+            when(filter_known_sex_groups)
+                .then(col("sex"))
+                .otherwise(lit("Unknown")),
         )
         .groupby(groupby_cols)
         .agg(vec![
