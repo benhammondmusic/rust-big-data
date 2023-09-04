@@ -20,7 +20,7 @@ fn load_csv_and_agg() -> Result<DataFrame, PolarsError> {
 
     let groupby_cols = vec![
         col("time_period"),
-        col("res_state"),
+        col("state_postal"),
         // col("race"),
         // col("ethnicity"),
         // col("age_group"),
@@ -31,6 +31,7 @@ fn load_csv_and_agg() -> Result<DataFrame, PolarsError> {
         .has_header(true)
         .with_quote_char(None)
         .finish()?
+        .rename(["res_state"], ["state_postal"])
         // "time_period" as cdc col with only YYYY-MM
         .with_column((col("cdc_case_earliest_dt").str().str_slice(0, Some(7))).alias("time_period"))
         .with_column(col("time_period").is_not_null().alias("cases"))
@@ -74,7 +75,7 @@ fn main() {
 
     let sort_cols = [
         "time_period",
-        "res_state",
+        "state_postal",
         // "race",
         // "age_group",
         "sex",
