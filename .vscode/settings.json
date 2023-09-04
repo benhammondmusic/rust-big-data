@@ -1,3 +1,13 @@
 {
-  "cSpell.words": ["chrono", "dataframe", "dtypes", "reqwest", "serde"]
+  "cSpell.words": [
+    "chrono",
+    "dataframe",
+    "dtypes",
+    "fips",
+    "lazyframe",
+    "rechunk",
+    "reqwest",
+    "serde",
+    "supertypes"
+  ]
 }
