@@ -3,7 +3,10 @@ use polars::{
     prelude::{LazyCsvReader, LazyFileListReader, LazyFrame, UnionArgs},
 };
 use polars_core::prelude::*;
-use polars_io::{prelude::CsvWriter, SerWriter};
+use polars_io::{
+    prelude::{CsvWriter, NullValues},
+    SerWriter,
+};
 
 // const TEST_FILENAME_00: &str = "spark_part-00001-3146a6b9-0113-41df-a776-bfddb9bfce06-c000.csv";
 
@@ -32,7 +35,9 @@ pub fn run() -> Result<(), PolarsError> {
     // CsvWriter::new(&mut file).finish(&mut by_sex_df)?;
 
     // vertically add the ALLS rows to the BY SEX rows
-    by_sex_df = by_sex_df.vstack(&alls_df).unwrap();
+    by_sex_df = by_sex_df
+        .vstack(&alls_df)
+        .expect("Problem vertically combining the ALLS rows with the BY_SEX groups rows");
     let sort_cols = ["state_postal", "sex"];
     by_sex_df = by_sex_df
         .sort(sort_cols, false, false)
@@ -41,7 +46,8 @@ pub fn run() -> Result<(), PolarsError> {
     println!("{:?}", by_sex_df);
 
     // write to csv
-    let mut file = std::fs::File::create("RESULTS---cdc_restricted_by_sex_state.csv").unwrap();
+    let mut file = std::fs::File::create("RESULTS---cdc_restricted_by_sex_state.csv")
+        .expect("Problem writing RESULTS---cdc_restricted_by_sex_state.csv");
     CsvWriter::new(&mut file).finish(&mut by_sex_df)?;
 
     Ok(())
@@ -62,6 +68,7 @@ fn read_csvs_as_lazyframe() -> Result<LazyFrame, PolarsError> {
         let lf = LazyCsvReader::new(file_path)
             .has_header(true)
             .with_quote_char(None)
+            .with_null_values(Some(NullValues::AllColumnsSingle(String::from("NA"))))
             .finish()?;
         lazy_frames.push(lf);
     }
