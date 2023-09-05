@@ -7,12 +7,7 @@ use polars_io::{
     prelude::{CsvWriter, NullValues},
     SerWriter,
 };
-
-// const TEST_FILENAME_00: &str = "spark_part-00001-3146a6b9-0113-41df-a776-bfddb9bfce06-c000.csv";
-
-// Same fake data as currently used by cdc_restricted_local
-const TEST_FILENAME_PART_1: &str = "COVID_Cases_Restricted_Detailed_04302021_Part_1.csv";
-const TEST_FILENAME_PART_2: &str = "COVID_Cases_Restricted_Detailed_04302021_Part_2.csv";
+use std::fs;
 
 pub fn run() -> Result<(), PolarsError> {
     let lazy_frame = read_csvs_as_lazyframe()?;
@@ -41,12 +36,29 @@ pub fn run() -> Result<(), PolarsError> {
     Ok(())
 }
 
-fn read_csvs_as_lazyframe() -> Result<LazyFrame, PolarsError> {
-    let test_filepath1: String = format!("tests/fake_source_data/{TEST_FILENAME_PART_1}");
-    let test_filepath2: String = format!("tests/fake_source_data/{TEST_FILENAME_PART_2}");
+fn get_csv_files_in_directory(directory: &str) -> Vec<String> {
+    let mut csv_files = Vec::new();
 
-    // List of CSV file paths
-    let file_paths = vec![test_filepath1, test_filepath2];
+    if let Ok(entries) = fs::read_dir(directory) {
+        for entry in entries.flatten() {
+            if let Ok(file_type) = entry.file_type() {
+                if file_type.is_file() {
+                    if let Some(file_name) = entry.file_name().to_str() {
+                        if file_name.ends_with(".csv") {
+                            csv_files.push(entry.path().display().to_string());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    csv_files
+}
+
+fn read_csvs_as_lazyframe() -> Result<LazyFrame, PolarsError> {
+    let file_paths = get_csv_files_in_directory("tests/fake_source_data/old/");
+    println!("Loading {:?}", file_paths);
 
     // Create an empty Vec to store the LazyFrames
     let mut lazy_frames: Vec<LazyFrame> = Vec::new();
