@@ -6,7 +6,7 @@ fn main() {
     env::set_var("POLARS_FMT_MAX_ROWS", "-1");
     env::set_var("POLARS_FMT_MAX_COLS", "-1");
 
-    run()
+    run().expect("Problem running aggregations")
 }
 
 /*

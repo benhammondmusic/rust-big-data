@@ -11,33 +11,40 @@ use polars_io::{prelude::CsvWriter, SerWriter};
 const TEST_FILENAME_PART_1: &str = "COVID_Cases_Restricted_Detailed_04302021_Part_1.csv";
 const TEST_FILENAME_PART_2: &str = "COVID_Cases_Restricted_Detailed_04302021_Part_2.csv";
 
-pub fn run() {
-    if let Ok(mut df) = read_csvs_as_lazyframe().and_then(|lazy_frame| {
-        println!("LazyFrame loaded successfully!");
-        process_lazyframe_into_by_sex_df(lazy_frame)
-    }) {
-        println!("LazyFrame Processed and Aggregated successfully!");
+pub fn run() -> Result<(), PolarsError> {
+    let lazy_frame = read_csvs_as_lazyframe()?;
+    println!("LazyFrame loaded successfully!");
 
-        let sort_cols = [
-            "state_postal",
-            "sex",
-            // "time_period",
-            // "race",
-            // "age_group",
-        ];
+    // ALLS
+    let alls_df = process_lazyframe_into_alls_df(lazy_frame.clone())?;
+    println!("LazyFrame Processed and Aggregated successfully!");
+    println!("alls");
+    println!("{:?}", alls_df);
+    // let mut file = std::fs::File::create("alls_results.csv").unwrap();
+    // CsvWriter::new(&mut file).finish(&mut alls_df)?;
 
-        df = df
-            .sort(sort_cols, false, false)
-            .expect("Problem sorting df");
+    // SEX
+    let mut by_sex_df = process_lazyframe_into_by_sex_df(lazy_frame)?;
+    println!("LazyFrame Processed and Aggregated successfully!");
+    println!("sex");
+    println!("{:?}", by_sex_df);
+    // let mut file = std::fs::File::create("sex_results.csv").unwrap();
+    // CsvWriter::new(&mut file).finish(&mut by_sex_df)?;
 
-        println!("{:?}", df);
+    // vertically add the ALLS rows to the BY SEX rows
+    by_sex_df = by_sex_df.vstack(&alls_df).unwrap();
+    let sort_cols = ["state_postal", "sex"];
+    by_sex_df = by_sex_df
+        .sort(sort_cols, false, false)
+        .expect("Problem sorting by_sex_df");
+    println!("sex+alls");
+    println!("{:?}", by_sex_df);
 
-        let mut file = std::fs::File::create("results.csv").unwrap();
-        CsvWriter::new(&mut file).finish(&mut df).unwrap();
-    } else {
-        // Handle the error if there was any
-        eprintln!("Error");
-    }
+    // write to csv
+    let mut file = std::fs::File::create("RESULTS---cdc_restricted_by_sex_state.csv").unwrap();
+    CsvWriter::new(&mut file).finish(&mut by_sex_df)?;
+
+    Ok(())
 }
 
 fn read_csvs_as_lazyframe() -> Result<LazyFrame, PolarsError> {
@@ -125,7 +132,7 @@ fn process_lazyframe_into_by_sex_df(lf: LazyFrame) -> Result<DataFrame, PolarsEr
 }
 
 fn process_lazyframe_into_alls_df(lf: LazyFrame) -> Result<DataFrame, PolarsError> {
-    let groupby_cols = vec![col("state_postal"), col("time_period")];
+    let groupby_cols = vec![col("state_postal"), col("sex"), col("time_period")];
 
     let df = lf
         // drop rows with missing geography
@@ -151,6 +158,7 @@ fn process_lazyframe_into_alls_df(lf: LazyFrame) -> Result<DataFrame, PolarsErro
                 .and(col("death_yn").neq(lit("No")))
                 .alias("death_unknown"),
         )
+        .with_column(lit("All").alias("sex"))
         .groupby(groupby_cols)
         .agg(vec![
             col("cases").sum(),

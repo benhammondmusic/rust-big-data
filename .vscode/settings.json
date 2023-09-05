@@ -8,6 +8,7 @@
     "rechunk",
     "reqwest",
     "serde",
-    "supertypes"
+    "supertypes",
+    "vstack"
   ]
 }
