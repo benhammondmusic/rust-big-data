@@ -20,30 +20,18 @@ pub fn run() -> Result<(), PolarsError> {
 
     // ALLS
     let alls_df = process_lazyframe_into_alls_df(lazy_frame.clone())?;
-    // println!("LazyFrame Processed and Aggregated successfully!");
-    // println!("alls");
-    // println!("{:?}", alls_df);
-    // let mut file = std::fs::File::create("alls_results.csv").unwrap();
-    // CsvWriter::new(&mut file).finish(&mut alls_df)?;
 
     // SEX
     let mut by_sex_df = process_lazyframe_into_by_sex_df(lazy_frame)?;
-    // println!("LazyFrame Processed and Aggregated successfully!");
-    // println!("sex");
-    // println!("{:?}", by_sex_df);
-    // let mut file = std::fs::File::create("sex_results.csv").unwrap();
-    // CsvWriter::new(&mut file).finish(&mut by_sex_df)?;
 
     // vertically add the ALLS rows to the BY SEX rows
     by_sex_df = by_sex_df
         .vstack(&alls_df)
         .expect("Problem vertically combining the ALLS rows with the BY_SEX groups rows");
-    let sort_cols = ["state_postal", "sex"];
+    let sort_cols = ["state_postal", "sex", "time_period"];
     by_sex_df = by_sex_df
         .sort(sort_cols, false, false)
         .expect("Problem sorting by_sex_df");
-    // println!("sex+alls");
-    // println!("{:?}", by_sex_df);
 
     // write to csv
     let mut file = std::fs::File::create("RESULTS---cdc_restricted_by_sex_state.csv")

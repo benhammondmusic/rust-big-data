@@ -26,11 +26,13 @@ mod tests {
 
         let expected_by_sex_python_df = expected_by_sex_python_lf.collect().unwrap();
 
+        // for (col1, col2) in by_sex_df.iter().zip(expected_by_sex_python_df.iter()) {
+        //     for (row_i, (val1, val2)) in col1.iter().zip(col2.iter()).enumerate() {
+        //         assert_eq!(val1, val2, "At row {}, {} != {}", row_i, val1, val2,)
+        //     }
+        // }
+
         // Assert the equality of the dataframes
-        assert_eq!(
-            by_sex_df, expected_by_sex_python_df,
-            "RESULTS \n\n {} EXPECTED \n\n {}",
-            by_sex_df, expected_by_sex_python_df
-        );
+        assert_eq!(by_sex_df, expected_by_sex_python_df);
     }
 }
