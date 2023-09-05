@@ -44,7 +44,7 @@ fn get_csv_files_in_directory(directory: &str) -> Vec<String> {
             if let Ok(file_type) = entry.file_type() {
                 if file_type.is_file() {
                     if let Some(file_name) = entry.file_name().to_str() {
-                        if file_name.ends_with(".csv") {
+                        if file_name.starts_with("spark_part-") && file_name.ends_with(".csv") {
                             csv_files.push(entry.path().display().to_string());
                         }
                     }
@@ -57,7 +57,8 @@ fn get_csv_files_in_directory(directory: &str) -> Vec<String> {
 }
 
 fn read_csvs_as_lazyframe() -> Result<LazyFrame, PolarsError> {
-    let file_paths = get_csv_files_in_directory("tests/fake_source_data/old/");
+    let file_paths =
+        get_csv_files_in_directory("../covid_case_restricted_detailed/data/2023-08-04-test/");
     println!("Loading {:?}", file_paths);
 
     // Create an empty Vec to store the LazyFrames
