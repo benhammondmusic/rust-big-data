@@ -16,21 +16,21 @@ const TEST_FILENAME_PART_2: &str = "COVID_Cases_Restricted_Detailed_04302021_Par
 
 pub fn run() -> Result<(), PolarsError> {
     let lazy_frame = read_csvs_as_lazyframe()?;
-    println!("LazyFrame loaded successfully!");
+    // println!("LazyFrame loaded successfully!");
 
     // ALLS
     let alls_df = process_lazyframe_into_alls_df(lazy_frame.clone())?;
-    println!("LazyFrame Processed and Aggregated successfully!");
-    println!("alls");
-    println!("{:?}", alls_df);
+    // println!("LazyFrame Processed and Aggregated successfully!");
+    // println!("alls");
+    // println!("{:?}", alls_df);
     // let mut file = std::fs::File::create("alls_results.csv").unwrap();
     // CsvWriter::new(&mut file).finish(&mut alls_df)?;
 
     // SEX
     let mut by_sex_df = process_lazyframe_into_by_sex_df(lazy_frame)?;
-    println!("LazyFrame Processed and Aggregated successfully!");
-    println!("sex");
-    println!("{:?}", by_sex_df);
+    // println!("LazyFrame Processed and Aggregated successfully!");
+    // println!("sex");
+    // println!("{:?}", by_sex_df);
     // let mut file = std::fs::File::create("sex_results.csv").unwrap();
     // CsvWriter::new(&mut file).finish(&mut by_sex_df)?;
 
@@ -42,8 +42,8 @@ pub fn run() -> Result<(), PolarsError> {
     by_sex_df = by_sex_df
         .sort(sort_cols, false, false)
         .expect("Problem sorting by_sex_df");
-    println!("sex+alls");
-    println!("{:?}", by_sex_df);
+    // println!("sex+alls");
+    // println!("{:?}", by_sex_df);
 
     // write to csv
     let mut file = std::fs::File::create("RESULTS---cdc_restricted_by_sex_state.csv")
@@ -94,9 +94,6 @@ fn process_lazyframe_into_by_sex_df(lf: LazyFrame) -> Result<DataFrame, PolarsEr
     let groupby_cols = vec![col("state_postal"), col("sex"), col("time_period")];
 
     let df = lf
-        // drop rows with missing geography
-        .filter(col("res_state").neq(lit("Missing")))
-        .rename(["res_state"], ["state_postal"])
         // "time_period" as cdc col with only YYYY-MM
         .with_column((col("cdc_case_earliest_dt").str().str_slice(0, Some(7))).alias("time_period"))
         // count every row as 1 case
@@ -123,6 +120,19 @@ fn process_lazyframe_into_by_sex_df(lf: LazyFrame) -> Result<DataFrame, PolarsEr
                 .then(col("sex"))
                 .otherwise(lit("Unknown")),
         )
+        // only keep known postal codes; combine rest as "Unknown" for national numbers
+        .with_column(
+            when(
+                col("res_state")
+                    .is_null()
+                    .or(col("res_state").eq(lit("Missing")))
+                    .or(col("res_state").eq(lit("Unknown")))
+                    .or(col("res_state").eq(lit("NA"))),
+            )
+            .then(lit("Unknown"))
+            .otherwise(col("res_state"))
+            .alias("state_postal"),
+        )
         .groupby(groupby_cols)
         .agg(vec![
             col("cases").sum(),
@@ -142,9 +152,19 @@ fn process_lazyframe_into_alls_df(lf: LazyFrame) -> Result<DataFrame, PolarsErro
     let groupby_cols = vec![col("state_postal"), col("sex"), col("time_period")];
 
     let df = lf
-        // drop rows with missing geography
-        .filter(col("res_state").neq(lit("Missing")))
-        .rename(["res_state"], ["state_postal"])
+        // only keep known postal codes; combine rest as "Unknown" for national numbers
+        .with_column(
+            when(
+                col("res_state")
+                    .is_null()
+                    .or(col("res_state").eq(lit("Missing")))
+                    .or(col("res_state").eq(lit("Unknown")))
+                    .or(col("res_state").eq(lit("NA"))),
+            )
+            .then(lit("Unknown"))
+            .otherwise(col("res_state"))
+            .alias("state_postal"),
+        )
         // "time_period" as cdc col with only YYYY-MM
         .with_column((col("cdc_case_earliest_dt").str().str_slice(0, Some(7))).alias("time_period"))
         // count every row as 1 case
